@@ -6,7 +6,7 @@
   2015-12-08
 */
  
-public class Hexadecimal {
+class Hexadecimal implements Comparable {
     //instance variables
     private int _decNum;
     private final static String HEXDIGITS = "0123456789ABCDEF";
@@ -157,6 +157,7 @@ public class Hexadecimal {
       =============================================*/
 
     public int compareTo( Object other ) {
+       
 	if(this._decNum == ((Hexadecimal)other)._decNum){
 	    return 0;
 	}
