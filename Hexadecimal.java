@@ -107,10 +107,15 @@ class Hexadecimal implements Comparable {
     
     public static int HexToDec( String s ) {
 	int m = 0;  
-	int dec = 0; 
+	int dec = 0;
+	try { 
 	for (int i = 0; i < s.length(); i++) { //creates forloop until i reaches one less than the length
 	    m = HEXDIGITS.indexOf(s.substring(i,i+1)); //m holds index of hexdigits that contains the first element of the string 
-	    dec +=  m * (int)Math.pow(16, s.length()-i-1);} //dec holds the first element * 16 base to one less than length 
+	    dec +=  m * (int)Math.pow(16, s.length()-i-1);} //dec holds the first element * 16 base to one less than length
+	}
+	catch (NullPointerException e) {
+	    System.out.println("NULULULUL");
+	}
 	return dec; //return dec 
     }
     
@@ -126,12 +131,17 @@ class Hexadecimal implements Comparable {
       =====================================*/
     
 	  public static int HexToDecR( String s ) {
-
+	      try {
 	      if (s.length() == 0) //base case : if string is empty (due to the hacking off of string) 
 		  return 0; // returns 0;
-	      //returns index of hexdigits that contains the first element of the string s * 16^string length-1 
-	      else return HEXDIGITS.indexOf(s.substring(0,1)) * (int)Math.pow(16, s.length()-1) + HexToDecR(s.substring(1)); //calls itself,leaving off first element 
+	      //returns index of hexdigits that contains the first element of the string s * 16^string length-1
+	      }
+	      catch (NullPointerException e) {
+		  System.out.println("You null");
+	      }
+	      return HEXDIGITS.indexOf(s.substring(0,1)) * (int)Math.pow(16, s.length()-1) + HexToDecR(s.substring(1)); //calls itself,leaving off first element 
 	  }
+
 
     /*=============================================
       boolean equals(Object) -- tells whether 2 Objs are equivalent
@@ -157,7 +167,11 @@ class Hexadecimal implements Comparable {
       =============================================*/
 
     public int compareTo( Object other ) {
-       
+
+        if (! ( other instanceof Hexadecimal) ) {
+	throw new ClassCastException( "\n" + "My first error message!" + "compareTo() input not a Hexadecimal.");
+	}
+	
 	if(this._decNum == ((Hexadecimal)other)._decNum){
 	    return 0;
 	}
@@ -178,6 +192,7 @@ class Hexadecimal implements Comparable {
 	Hexadecimal b2 = new Hexadecimal(5);
 	Hexadecimal b3 = b1;
 	Hexadecimal b4 = new Hexadecimal(7);
+	Binary b5 = new Binary(5); 
 
 	System.out.println( b1 );
 	System.out.println( b2 );
@@ -200,8 +215,10 @@ class Hexadecimal implements Comparable {
 	System.out.println( b1.compareTo(b3) ); //should be 0
 	System.out.println( b1.compareTo(b4) ); //should be neg
 	System.out.println( b4.compareTo(b1) ); //should be pos
+	//	System.out.println( b4.compareTo(b5) ); 
 	
 	System.out.println( "Testing ...HexToDec" );
+	System.out.println(HexToDec(null));
 	System.out.println(HexToDec("C"));   //should be 12
 	System.out.println(HexToDec("100")); //should be 256
 	System.out.println(HexToDec("ABC")); //should be 2748
@@ -210,6 +227,7 @@ class Hexadecimal implements Comparable {
 	System.out.println(HexToDec("ABCDEF")); //should be 11259375
 
 	System.out.println( "Testing ...HexToDecR" );
+	System.out.println(HexToDecR(null));
 	System.out.println(HexToDecR("C"));   //should be 12
 	System.out.println(HexToDecR("100")); //should be 256
 	System.out.println(HexToDecR("ABC")); //should be 2748
