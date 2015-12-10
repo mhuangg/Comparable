@@ -67,12 +67,12 @@ public class SuperArray {
 
 		
     //accessor -- return value at specified index
-    public int get( Comparable index ) { return _data[index]; }
+    public Object get( int index ) { return _data[index]; }
 
 		
     //mutator -- set value at index to newVal, 
     //           return old value at index
-    public int set( Comparable index, Comparable newVal ) { 
+    public Object set( int index, Comparable newVal ) { 
 	Comparable temp = _data[index];
 	_data[index] = newVal;
 	return temp;
@@ -84,8 +84,7 @@ public class SuperArray {
     public void add( Comparable newVal ) {
     	if(_size>=_data.length){
     		expand();
-    	}
-	    if(newVal==0){_data[_lastPos+1]=-1;} //doesn't allow user to add 0 to the array, and lets you know it was invalid with -1
+		_data[_lastPos+1]=(new Binary(-1));} //doesn't allow user to add 0 to the array, and lets you know it was invalid with -1
 	    else{_data[_lastPos+1]=newVal;} //or just do the regular thing
 	    _size++;
 	    _lastPos++;
@@ -93,7 +92,7 @@ public class SuperArray {
 
     //inserts an item at index
     //shifts existing elements to the right
-    public void add( Comparable index, int newVal ) {
+    public void add( int index, Comparable newVal ) {
     	while(index>=_data.length){
     		expand();
     		_size=index;
@@ -113,7 +112,7 @@ public class SuperArray {
 
     //removes the item at index
     //shifts elements left to fill in newly-empted slot
-    public void remove( Comparable index ) {
+    public void remove( int index ) {
         if(index<=_lastPos){
     	//copy all elements to right of given index to the pos to the left
         for (int i=index;i<_size;i++){
@@ -126,9 +125,9 @@ public class SuperArray {
 
     // ~~~~~~~~~~~~~~ TESTING ~~~~~~~~~~~~~~
     //return number of meaningful items in _data
-    public int size() {return _size;}
+    public Object size() {return _size;}
 
-    public int linSearch(Comparable[] a, int target) {
+    public Object linSearch(Comparable[] a, Object target) {
 	for (int x= 0; x<a.length; x++){
 	    if (a[x]==target){
 		return x;
@@ -138,7 +137,15 @@ public class SuperArray {
 	return -1;
 	//return -1 if the entire array without a match
     }
-	
+
+    public boolean isSorted() {
+	for (int i =0; i<_data.length; i++) {
+	    if (_data[i].compareTo(_data[i+1]) == -1) {
+		return true; }
+	}
+	return false;
+    }
+	    
 	
 
 
@@ -211,48 +218,51 @@ public class SuperArray {
 	System.out.println(mayfield);
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	//*****INSERT ANY ADDITIONAL TEST CALLS HERE*****
-	Binary a = new SuperArray();
+	SuperArray mixed = new SuperArray();
+
     
 	System.out.println("Printing empty ListInt a...");
-	System.out.println(a);
-	
-	a.add(5);
-	a.add(4);
-	a.add(3);
-	a.add(2);
-	a.add(1);
-	
-	System.out.println("Printing populated ListInt a...");
-	System.out.println(a);
-	
+	System.out.println(mixed);
 
-	a.remove(3);
+	mixed.add( new Binary(2) );
+	mixed.add( new Hexadecimal(60) );
+	mixed.add( new Binary(16) );
+	mixed.add( new Hexadecimal(100) );
+	mixed.add( new Rational(2, 1) );
+
+	System.out.println("Printing populate array");
+	System.out.println(mixed);
+
+	mixed.remove(3);
 	System.out.println("Printing ListInt a post-remove...");
-	System.out.println(a);
-	a.remove(3);
+	System.out.println(mixed);
+	mixed.remove(3);
 	System.out.println("Printing ListInt a post-remove...");
-	System.out.println(a);
+	System.out.println(mixed);
 	
 	
-	a.add(3,99);
+	mixed.add(3, new Binary(4));
 	System.out.println("Printing ListInt a post-insert...");
-	System.out.println(a);
-	a.add(2,88);
+	System.out.println(mixed);
+	mixed.add(2,new Hexadecimal("BEE"));
 	System.out.println("Printing ListInt a post-insert...");
-	System.out.println(a);
-	a.add(1,77);
+	System.out.println(mixed);
+	mixed.add(1,new Rational(4,8));
 	System.out.println("Printing ListInt a post-insert...");
-	System.out.println(a);
-	a.add(7,3);
+	System.out.println(mixed);
+	mixed.add(7,new Binary("10000"));
 	System.out.println("Printing ListInt a post-insert...");
-	System.out.println(a);
+	System.out.println(mixed);
 	
-    a.add(20,4);
-    System.out.println(a);
-    a.remove(4);
-    System.out.println(a);
-    System.out.println(a.size());
-    System.out.println(a.get(1));
+    mixed.add(20,new Hexadecimal("ABCD"));
+    System.out.println(mixed);
+    mixed.remove(4);
+    System.out.println(mixed);
+    System.out.println(mixed.size());
+    System.out.println(mixed.get(1));
+
+    System.out.println(mixed.isSorted());
+    System.out.println(linSearch(new Rational(5,1),3));
     }//end main
 		
 }//end class
