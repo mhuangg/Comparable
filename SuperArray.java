@@ -20,11 +20,11 @@
  *  remove item (while maintaining "left-justification")
  *****************************/
 
-class SuperArray implements ListInt {
+public class SuperArray { 
     
     //~~~~~INSTANCE VARS~~~~~
     //underlying container, or "core" of this data structure:
-    private int[] _data;
+    private Comparable[] _data;
     
     //position of last meaningful value
     private int _lastPos;
@@ -36,7 +36,7 @@ class SuperArray implements ListInt {
     //~~~~~METHODS~~~~~
     //default constructor initializes 10-item array
     public SuperArray() { 
-	_data = new int[10];
+	_data = new Comparable[10];
 	_lastPos = -1; //flag to indicate no lastpos yet
 	_size = 0;	
     }
@@ -59,7 +59,7 @@ class SuperArray implements ListInt {
 		
     //double capacity of this SuperArray
     public void expand() { 
-	int[] temp = new int[ _data.length * 2 ];
+	Comparable[] temp = new Comparable[ _data.length * 2 ];
 	for( int i = 0; i < _data.length; i++ )
 	    temp[i] = _data[i];
 	_data = temp;
@@ -67,13 +67,13 @@ class SuperArray implements ListInt {
 
 		
     //accessor -- return value at specified index
-    public int get( int index ) { return _data[index]; }
+    public int get( Comparable index ) { return _data[index]; }
 
 		
     //mutator -- set value at index to newVal, 
     //           return old value at index
-    public int set( int index, int newVal ) { 
-	int temp = _data[index];
+    public int set( Comparable index, Comparable newVal ) { 
+	Comparable temp = _data[index];
 	_data[index] = newVal;
 	return temp;
     }
@@ -81,7 +81,7 @@ class SuperArray implements ListInt {
     
     // ~~~~~~~~~~~~~~ PHASE II ~~~~~~~~~~~~~~
     //adds an item after the last item
-    public void add( int newVal ) {
+    public void add( Comparable newVal ) {
     	if(_size>=_data.length){
     		expand();
     	}
@@ -93,7 +93,7 @@ class SuperArray implements ListInt {
 
     //inserts an item at index
     //shifts existing elements to the right
-    public void add( int index, int newVal ) {
+    public void add( Comparable index, int newVal ) {
     	while(index>=_data.length){
     		expand();
     		_size=index;
@@ -113,7 +113,7 @@ class SuperArray implements ListInt {
 
     //removes the item at index
     //shifts elements left to fill in newly-empted slot
-    public void remove( int index ) {
+    public void remove( Comparable index ) {
         if(index<=_lastPos){
     	//copy all elements to right of given index to the pos to the left
         for (int i=index;i<_size;i++){
@@ -127,6 +127,19 @@ class SuperArray implements ListInt {
     // ~~~~~~~~~~~~~~ TESTING ~~~~~~~~~~~~~~
     //return number of meaningful items in _data
     public int size() {return _size;}
+
+    public int linSearch(Comparable[] a, int target) {
+	for (int x= 0; x<a.length; x++){
+	    if (a[x]==target){
+		return x;
+		//if a match is found, return that index looped on
+	    }
+	}
+	return -1;
+	//return -1 if the entire array without a match
+    }
+	
+	
 
 
     //main method for testing
@@ -198,7 +211,7 @@ class SuperArray implements ListInt {
 	System.out.println(mayfield);
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	//*****INSERT ANY ADDITIONAL TEST CALLS HERE*****
-    ListInt a=new SuperArray();
+	Binary a = new SuperArray();
     
 	System.out.println("Printing empty ListInt a...");
 	System.out.println(a);

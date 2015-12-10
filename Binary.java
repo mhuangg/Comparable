@@ -19,6 +19,7 @@ class Binary implements Comparable {
         _decNum = 0;
 	_binNum = "0"; 
     }
+        
 
     /*=====================================
       overloaded constructor
@@ -29,6 +30,8 @@ class Binary implements Comparable {
 	_decNum = n;
 	_binNum = decToBin(n); 
     }
+					  
+    
 
     /*=====================================
       overloaded constructor
@@ -36,8 +39,13 @@ class Binary implements Comparable {
       post: sets _binNum to input, _decNum to decimal equiv
       =====================================*/
     public Binary( String s ) {
+	try {
 	_binNum = s;
-	_decNum = binToDec(s); 
+        _decNum = binToDec(s);
+	}
+	catch (NullPointerException e) {
+	    System.out.println("NULL!"); 
+	}
     }
     
     /*=====================================
@@ -80,13 +88,15 @@ class Binary implements Comparable {
       decToBinR(14) -> "1110"
       =====================================*/
     public static String decToBinR( int n ) { 
-	String binary = "";  
+	String binary = "";
+ 
 	if (n == 0) // base case 
 	    binary = "0"; 
 	else if (n == 1) // base case 
 	    binary = "1";
 	    else
 		binary = decToBinR(n/2) + (n % 2); // calls the method with the input's quotient + remainder(either 0 or 1)
+    
 	return binary; //return binary 
 	}
                                      
@@ -103,12 +113,20 @@ class Binary implements Comparable {
       binToDec("1110") -> 14
       =====================================*/
     public static int binToDec( String s ) {
-	int dec = 0; //holds the int that will be outputted  
+	int dec = 0; //holds the int that will be outputted
+	try { 
 	for (int i = 0; i < s.length() ; i++) { //forloop traversing string s
 	    //first element of string is parsed to int 
-	    dec += Integer.parseInt(s.substring(i,i+1)) * Math.pow(2,s.length()-i-1);} //multiply by base 2 to the length-i-1
-	return dec; //return int
+	    dec += Integer.parseInt(s.substring(i,i+1)) * Math.pow(2,s.length()-i-1);
+	} //multiply by base 2 to the length-i-1
+	}
+	catch (NullPointerException e) {
+	    System.out.println("Caught another null");
+	}
+    
+	return dec; //return dec 
     }
+
 
     /*=====================================
       String binToDecR(String) -- converts base-10 input to binary, recursively
@@ -121,17 +139,22 @@ class Binary implements Comparable {
       binToDecR("11") -> 3
       binToDecR("1110") -> 14
       =====================================*/
-    public static int binToDecR( String s ) {  
-	if (s.length() == 0) { //base case 
+    public static int binToDecR( String s ) {
+	try { 
+	    if (s.length() == 0) { //base case 
 	    return 0;
+	    }
 	}
-	else {
-	    //first element of string is parsed into int multiplied by 2^s.length-1 
-	    return Integer.parseInt(s.substring(0,1)) * (int)Math.pow(2,s.length()-1) + 
+    	catch (NullPointerException e) {
+	    System.out.println("another null?");
+	}
+	return Integer.parseInt(s.substring(0,1)) * (int)Math.pow(2,s.length()-1) + 
 		binToDecR(s.substring(1)); //calls own method & string is returned without first element 
-	}
     }
-
+    
+	        
+    
+    
     /*=============================================
       boolean equals(Object) -- tells whether 2 Objs are equivalent
       pre:  other is an instance of class Binary
@@ -169,14 +192,18 @@ class Binary implements Comparable {
 	  post: Returns 0 if this Object is equal to the input Object,
 	  negative integer if this<input, positive integer otherwise
 	  =============================================*/
-    public int compareTo( Object other ) { 
+    public int compareTo( Object other ) {
+	if (! ( other instanceof Binary) ) {
+	throw new ClassCastException( "\nMy first error message!" + "compareTo() input not a Binary.");
+	}
 	if (this.equals((Binary)other)) {
 	    return 0; }
 	else if (this._decNum < ((Binary)other)._decNum) {
 	    return -1; }
 	else return 1;
+    
     }
-
+    
     //alternative clever compareTo method
     /**   public int compareTo(Object other) {
 	  Binary bin = (Binary)(other);
@@ -187,36 +214,44 @@ class Binary implements Comparable {
 	
     //main method for testing
     public static void main( String[] args ) {
-
-	System.out.println();
+        
+       
 	System.out.println( "Testing ..." );
 
 	Binary b1 = new Binary(5);
 	Binary b2 = new Binary(5);
 	Binary b3 = b1;
 	Binary b4 = new Binary(7);
+	Binary b5 = null;
 
 	System.out.println( b1 );
 	System.out.println( b2 );
 	System.out.println( b3 );       
 	System.out.println( b4 );
+	System.out.println( b5 );
 
+       
 	System.out.println(decToBin(0));  //should be 0
 	System.out.println(decToBin(1));  //should be 1
 	System.out.println(decToBin(2)); //should be 10
  	System.out.println(decToBin(3)); //should be 11
  	System.out.println(decToBin(14)); //should be 1110
+
+  
 	System.out.println(decToBinR(0));   
 	System.out.println(decToBinR(1));  
 	System.out.println(decToBinR(2)); 
 	System.out.println(decToBinR(3)); 
  	System.out.println(decToBinR(14)); 
 
+	System.out.println(binToDec(null));
 	System.out.println(binToDec("0")); // should be 0
 	System.out.println(binToDec("1")); //should be 1
 	System.out.println(binToDec("10")); // should be 2
         System.out.println(binToDec("11")); // should be 3
-        System.out.println(binToDec("1110")); // should be 14
+	System.out.println(binToDec("1110")); // should be 14
+
+	System.out.println(binToDecR(null));
 	System.out.println(binToDecR("0")); 
 	System.out.println(binToDecR("1"));  
 	System.out.println(binToDecR("10"));  
